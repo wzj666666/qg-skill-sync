@@ -36,17 +36,27 @@ bash {baseDir}/scripts/setup.sh [仓库地址] [skills子目录]
 
 ### 第 2 步：创建 OpenClaw 定时任务
 
-初始化成功后，立即创建定时同步任务：
+初始化成功后，立即创建两个定时同步任务（每天 10:30 和 17:30 各执行一次）：
 
 ```bash
 openclaw cron add \
-  --name "qg-skill-sync" \
-  --cron "*/5 * * * *" \
+  --name "qg-skill-sync-1030" \
+  --cron "30 10 * * *" \
   --session isolated \
   --message "执行 qg-skill-sync：运行 bash ~/.qg-skill-sync/sync.sh，输出同步结果。" \
+  --light-context \
+  --no-deliver
+
+openclaw cron add \
+  --name "qg-skill-sync-1730" \
+  --cron "30 17 * * *" \
+  --session isolated \
+  --message "执行 qg-skill-sync：运行 bash ~/.qg-skill-sync/sync.sh，输出同步结果。" \
+  --light-context \
+  --no-deliver
 ```
 
-向用户确认：**"技能同步已设置完成，每 5 分钟自动从 Git 仓库拉取最新技能。请新开一个 OpenClaw 会话以加载新技能。"**
+向用户确认：**"技能同步已设置完成，每天 10:30 和 17:30 自动从 Git 仓库拉取最新技能。请新开一个 OpenClaw 会话以加载新技能。"**
 
 ## 手动同步
 
@@ -68,7 +78,7 @@ tail -20 ~/.qg-skill-sync/logs/sync.log
 
 用户说"卸载技能同步"/"关闭技能同步"时：
 
-1. 移除定时任务（先用 `openclaw cron list` 找到 job id，再用 `cron.remove` 移除 name 为 "qg-skill-sync" 的任务）
+1. 移除定时任务（先用 `openclaw cron list` 找到 job id，再用 `cron.remove` 移除 name 为 "qg-skill-sync-1030" 和 "qg-skill-sync-1730" 的两个任务）
 2. 清理本地仓库缓存：
 
 ```bash
