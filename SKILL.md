@@ -44,16 +44,12 @@ openclaw cron add \
   --cron "30 10 * * *" \
   --session isolated \
   --message "执行 qg-skill-sync：运行 bash ~/.qg-skill-sync/sync.sh，输出同步结果。" \
-  --light-context \
-  --no-deliver
 
 openclaw cron add \
   --name "qg-skill-sync-1730" \
   --cron "30 17 * * *" \
   --session isolated \
   --message "执行 qg-skill-sync：运行 bash ~/.qg-skill-sync/sync.sh，输出同步结果。" \
-  --light-context \
-  --no-deliver
 ```
 
 向用户确认：**"技能同步已设置完成，每天 10:30 和 17:30 自动从 Git 仓库拉取最新技能。请新开一个 OpenClaw 会话以加载新技能。"**
